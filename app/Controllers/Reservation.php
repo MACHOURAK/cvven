@@ -270,102 +270,65 @@ class Reservation extends BaseController
 
 
     public function supprimer($id)
-{
-    $reservationModel = new ReservationModel();
-    $chambreModel = new ChambreModel();
+    {
+        $reservationModel = new ReservationModel();
+        $chambreModel = new ChambreModel();
 
+        // Récupérer la réservation
+        $reservation = $reservationModel->find($id);
 
-    // Récupérer la réservation
+        if (!$reservation) {
+            return "Erreur : réservation introuvable.";
+        }
 
-    $reservation = $reservationModel->find($id);
+        // Si elle est déjà annulée
+        if (isset($reservation['statut']) && $reservation['statut'] == 'Annulée') {
+            return redirect()->to('/reservations');
+        }
 
+        // Récupérer la chambre
+        $chambre = $chambreModel->find(
+            $reservation['chambre_id']
+        );
 
-    if (!$reservation) {
+        if (!$chambre) {
+            return "Erreur : chambre introuvable.";
+        }
 
-        return "Erreur : réservation introuvable.";
+        // Rendre les chambres disponibles
+        $nouveauStock =
+            $chambre['nombre_disponible']
+            + $reservation['nombre_chambres'];
 
-    }
+        // Transaction
+        $db = \Config\Database::connect();
 
+        $db->transStart();
 
+        // Remettre les chambres disponibles
+        $chambreModel->update(
+            $reservation['chambre_id'],
+            [
+                'nombre_disponible' => $nouveauStock
+            ]
+        );
 
-    // Si elle est déjà annulée
+        // Modifier le statut
+        $reservationModel->update(
+            $id,
+            [
+                'statut' => 'Annulée'
+            ]
+        );
 
-    if ($reservation['statut'] == 'Annulée') {
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return "Erreur : impossible d'annuler la réservation.";
+        }
 
         return redirect()->to('/reservations');
-
     }
-
-
-
-    // Récupérer la chambre
-
-    $chambre = $chambreModel->find(
-        $reservation['chambre_id']
-    );
-
-
-    if (!$chambre) {
-
-        return "Erreur : chambre introuvable.";
-
-    }
-
-
-
-    // Rendre les chambres disponibles
-
-    $nouveauStock =
-        $chambre['nombre_disponible']
-        + $reservation['nombre_chambres'];
-
-
-
-    // Transaction
-
-    $db = \Config\Database::connect();
-
-    $db->transStart();
-
-
-
-    // Remettre les chambres disponibles
-
-    $chambreModel->update(
-        $reservation['chambre_id'],
-        [
-            'nombre_disponible' => $nouveauStock
-        ]
-    );
-
-
-
-    // Modifier le statut
-
-    $reservationModel->update(
-        $id,
-        [
-            'statut' => 'Annulée'
-        ]
-    );
-
-
-
-    $db->transComplete();
-
-
-
-    if ($db->transStatus() === false) {
-
-        return "Erreur : impossible d'annuler la réservation.";
-
-    }
-
-
-
-    return redirect()->to('/reservations');
-
-}
 
 
     public function modifier($id)
@@ -436,10 +399,7 @@ class Reservation extends BaseController
             $nombreChambres
             - $ancienNombre;
 
-        /*
-         * Si difference > 0 :
-         * on demande plus de chambres
-         */
+        // Si on demande plus de chambres
         if ($difference > 0) {
 
             if ($difference > $chambre['nombre_disponible']) {
@@ -454,10 +414,7 @@ class Reservation extends BaseController
                 - $difference;
         }
 
-        /*
-         * Si difference < 0 :
-         * on rend des chambres disponibles
-         */
+        // Si on rend des chambres disponibles
         elseif ($difference < 0) {
 
             $nouveauStock =
@@ -465,10 +422,7 @@ class Reservation extends BaseController
                 + abs($difference);
         }
 
-        /*
-         * Si difference = 0 :
-         * le stock ne change pas
-         */
+        // Si le nombre ne change pas
         else {
 
             $nouveauStock =

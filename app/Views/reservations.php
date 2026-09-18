@@ -89,8 +89,11 @@
 
                             <th>Prix total</th>
 
+<<<<<<< HEAD
                             <th>Statut</th>
 
+=======
+>>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
                             <th>Action</th>
 
                         </tr>
@@ -132,10 +135,13 @@
                                 </td>
 
                                 <td>
+<<<<<<< HEAD
                                     <?= $reservation['statut'] ?>
                                 </td>
 
                                 <td>
+=======
+>>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
                                     <a
                                         href="/reservation/modifier/<?= $reservation['id'] ?>"
                                         class="btn btn-warning btn-sm"
@@ -146,9 +152,15 @@
                                     <a
                                         href="/reservation/supprimer/<?= $reservation['id'] ?>"
                                         class="btn btn-danger btn-sm"
+<<<<<<< HEAD
                                         onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');"
                                     >
                                         Annuler
+=======
+                                        onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');"
+                                    >
+                                        Supprimer
+>>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
                                     </a>
                                 </td>
 
