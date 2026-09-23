@@ -1,3 +1,4 @@
+```php
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -58,6 +59,44 @@
 
 
                         <form action="/reservation/modifier/<?= $reservation['id'] ?>" method="post">
+
+                            <!-- Nom du client -->
+                            <div class="mb-3">
+
+                                <label for="nom_client" class="form-label">
+                                    Nom du client
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="nom_client"
+                                    name="nom_client"
+                                    class="form-control"
+                                    value="<?= esc($reservation['nom_client']) ?>"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Prénom du client -->
+                            <div class="mb-3">
+
+                                <label for="prenom_client" class="form-label">
+                                    Prénom du client
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="prenom_client"
+                                    name="prenom_client"
+                                    class="form-control"
+                                    value="<?= esc($reservation['prenom_client']) ?>"
+                                    required
+                                >
+
+                            </div>
+
 
                             <!-- Date d'arrivée -->
                             <div class="mb-3">
@@ -159,3 +198,4 @@
 </body>
 
 </html>
+```
