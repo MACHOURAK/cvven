@@ -1,3 +1,4 @@
+```php
 <?php
 
 namespace App\Controllers;
@@ -247,7 +248,9 @@ class Reservation extends BaseController
             'dateDepart' => $dateDepart,
             'nombreNuits' => $nombreNuits,
             'nombreChambres' => $nombreChambres,
-            'prixTotal' => $prixTotal
+            'prixTotal' => $prixTotal,
+            'nomClient' => $nomClient,
+            'prenomClient' => $prenomClient
         ]);
     }
 
@@ -371,9 +374,17 @@ class Reservation extends BaseController
         }
 
         // Récupérer les nouvelles données
+        $nomClient = $this->request->getPost('nom_client');
+        $prenomClient = $this->request->getPost('prenom_client');
+
         $dateArrivee = $this->request->getPost('date_arrivee');
         $dateDepart = $this->request->getPost('date_depart');
         $nombreChambres = (int) $this->request->getPost('nombre_chambres');
+
+        // Vérifier le nom et le prénom
+        if (!$nomClient || !$prenomClient) {
+            return "Erreur : veuillez renseigner le nom et le prénom du client.";
+        }
 
         // Vérifier les dates
         if (!$dateArrivee || !$dateDepart) {
@@ -467,6 +478,8 @@ class Reservation extends BaseController
         $reservationModel->update(
             $id,
             [
+                'nom_client' => $nomClient,
+                'prenom_client' => $prenomClient,
                 'date_arrivee' => $dateArrivee,
                 'date_depart' => $dateDepart,
                 'nombre_chambres' => $nombreChambres,
