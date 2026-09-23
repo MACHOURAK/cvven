@@ -17,6 +17,8 @@ class ReservationModel extends Model
         'date_depart',
         'nombre_chambres',
         'prix_total',
-        'statut'
+        'statut',
+        'nom_client',
+        'prenom_client'
     ];
 }

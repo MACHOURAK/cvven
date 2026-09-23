@@ -1,3 +1,4 @@
+```php
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,10 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Réservations - CVVEN</title>
+    <title>Réservation - CVVEN</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 </head>
 
 <body>
@@ -31,7 +34,7 @@
                     Nos villages
                 </a>
 
-                <a class="nav-link active" href="/reservations">
+                <a class="nav-link" href="/reservations">
                     Réservations
                 </a>
 
@@ -47,136 +50,209 @@
         <div class="text-center mb-5">
 
             <h1 class="fw-bold">
-                Liste des réservations
+                Réserver une chambre
             </h1>
 
             <p class="text-muted">
-                Retrouvez ici toutes les réservations enregistrées.
+                Remplissez les informations pour effectuer votre réservation.
             </p>
 
         </div>
 
 
-        <?php if (empty($reservations)): ?>
+        <!-- Informations du village et de la chambre -->
+        <div class="card shadow-sm mb-4">
 
-            <!-- Aucune réservation -->
-            <div class="alert alert-info text-center">
-                Aucune réservation enregistrée.
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    <?= esc($village['nom']) ?>
+                </h3>
+
+                <p class="mb-1">
+                    <strong>Chambre :</strong>
+                    <?= esc($chambre['nom']) ?>
+                </p>
+
+                <p class="mb-1">
+                    <strong>Prix :</strong>
+                    <?= esc($prix) ?> € / nuit
+                </p>
+
+                <p class="mb-0">
+                    <strong>Disponibilité :</strong>
+                    <?= esc($nombreDisponible) ?> chambre(s)
+                </p>
+
             </div>
 
-        <?php else: ?>
+        </div>
 
-            <!-- Tableau -->
-            <div class="table-responsive">
 
-                <table class="table table-bordered table-striped table-hover align-middle">
+        <!-- Message d'erreur -->
+        <?php if (!empty($erreur)): ?>
 
-                    <thead class="table-primary">
-
-                        <tr>
-
-                            <th>ID</th>
-
-                            <th>Village</th>
-
-                            <th>Chambre</th>
-
-                            <th>Date d'arrivée</th>
-
-                            <th>Date de départ</th>
-
-                            <th>Nombre de chambres</th>
-
-                            <th>Prix total</th>
-
-                            <th>Statut</th>
-
-                            <th>Action</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <?php foreach ($reservations as $reservation): ?>
-
-                            <tr>
-
-                                <td>
-                                    <?= $reservation['id'] ?>
-                                </td>
-
-                                <td>
-                                    <?= $reservation['village_nom'] ?>
-                                </td>
-
-                                <td>
-                                    <?= $reservation['chambre_nom'] ?>
-                                </td>
-
-                                <td>
-                                    <?= $reservation['date_arrivee'] ?>
-                                </td>
-
-                                <td>
-                                    <?= $reservation['date_depart'] ?>
-                                </td>
-
-                                <td>
-                                    <?= $reservation['nombre_chambres'] ?>
-                                </td>
-
-                                <td class="fw-bold">
-                                    <?= $reservation['prix_total'] ?> €
-                                </td>
-
-                                <td>
-                                    <?= $reservation['statut'] ?>
-                                </td>
-
-                                <td>
-
-                                    <a
-                                        href="/reservation/modifier/<?= $reservation['id'] ?>"
-                                        class="btn btn-warning btn-sm"
-                                    >
-                                        Modifier
-                                    </a>
-
-                                    <a
-                                        href="/reservation/supprimer/<?= $reservation['id'] ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');"
-                                    >
-                                        Annuler
-                                    </a>
-
-                                </td>
-
-                            </tr>
-
-                        <?php endforeach; ?>
-
-                    </tbody>
-
-                </table>
-
+            <div class="alert alert-danger">
+                <?= esc($erreur) ?>
             </div>
 
         <?php endif; ?>
 
 
-        <!-- Boutons -->
-        <div class="mt-4">
+        <!-- Formulaire -->
+        <div class="card shadow-sm">
 
-            <a href="/villages" class="btn btn-primary">
-                Retour aux villages
-            </a>
+            <div class="card-body">
 
-            <a href="/" class="btn btn-outline-secondary ms-2">
-                Accueil
-            </a>
+                <form action="/reservation/confirm" method="post">
+
+                    <!-- Identifiants cachés -->
+                    <input
+                        type="hidden"
+                        name="village_id"
+                        value="<?= esc($villageId) ?>"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="chambre_id"
+                        value="<?= esc($chambreId) ?>"
+                    >
+
+
+                    <!-- Nom -->
+                    <div class="mb-3">
+
+                        <label for="nom_client" class="form-label">
+                            Nom
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="nom_client"
+                            name="nom_client"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Prénom -->
+                    <div class="mb-3">
+
+                        <label for="prenom_client" class="form-label">
+                            Prénom
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="prenom_client"
+                            name="prenom_client"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Date d'arrivée -->
+                    <div class="mb-3">
+
+                        <label for="date_arrivee" class="form-label">
+                            Date d'arrivée
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="date_arrivee"
+                            name="date_arrivee"
+                            value="<?= esc($dateArrivee ?? '') ?>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Date de départ -->
+                    <div class="mb-3">
+
+                        <label for="date_depart" class="form-label">
+                            Date de départ
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="date_depart"
+                            name="date_depart"
+                            value="<?= esc($dateDepart ?? '') ?>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Nombre de chambres -->
+                    <div class="mb-3">
+
+                        <label for="nombre_chambres" class="form-label">
+                            Nombre de chambres
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="nombre_chambres"
+                            name="nombre_chambres"
+                            min="1"
+                            max="<?= esc($nombreDisponible) ?>"
+                            value="<?= esc($nombreChambres ?? 1) ?>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Prix total -->
+                    <?php if ($prixTotal !== null): ?>
+
+                        <div class="alert alert-info">
+
+                            <strong>
+                                Prix total :
+                            </strong>
+
+                            <?= esc($prixTotal) ?> €
+
+                        </div>
+
+                    <?php endif; ?>
+
+
+                    <!-- Boutons -->
+                    <div class="d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Confirmer la réservation
+                        </button>
+
+                        <a
+                            href="/villages"
+                            class="btn btn-outline-secondary"
+                        >
+                            Retour aux villages
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
@@ -184,7 +260,7 @@
 
 
     <!-- Pied de page -->
-    <footer class="bg-dark text-white text-center py-4">
+    <footer class="bg-dark text-white text-center py-4 mt-5">
 
         <p class="mb-0">
             © 2026 CVVEN - Tous droits réservés
@@ -193,9 +269,11 @@
     </footer>
 
 
-    <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
 
 </body>
 
 </html>
+```
