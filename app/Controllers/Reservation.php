@@ -1,3 +1,4 @@
+```php
 <?php
 
 namespace App\Controllers;
@@ -132,6 +133,15 @@ class Reservation extends BaseController
         $dateDepart = $this->request->getPost('date_depart');
         $nombreChambres = (int) $this->request->getPost('nombre_chambres');
 
+        // Récupérer le nom et le prénom du client
+        $nomClient = $this->request->getPost('nom_client');
+        $prenomClient = $this->request->getPost('prenom_client');
+
+        // Vérifier le nom et le prénom
+        if (!$nomClient || !$prenomClient) {
+            return "Erreur : veuillez renseigner le nom et le prénom du client.";
+        }
+
         // Vérifier les identifiants
         if (!$villageId || !$chambreId) {
             return "Erreur : village ou chambre introuvable.";
@@ -208,7 +218,9 @@ class Reservation extends BaseController
             'date_depart' => $dateDepart,
             'nombre_chambres' => $nombreChambres,
             'prix_total' => $prixTotal,
-            'statut' => 'Confirmée'
+            'statut' => 'Confirmée',
+            'nom_client' => $nomClient,
+            'prenom_client' => $prenomClient
         ]);
 
         // Retirer les chambres réservées
