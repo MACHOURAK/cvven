@@ -1,20 +1,31 @@
+```php
 <!DOCTYPE html>
+
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Réservations - CVVEN</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
 </head>
 
 <body>
 
     <!-- Barre de navigation -->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
         <div class="container">
 
             <a class="navbar-brand fw-bold" href="/">
@@ -38,10 +49,12 @@
             </div>
 
         </div>
+
     </nav>
 
 
     <!-- Contenu -->
+
     <main class="container py-5">
 
         <div class="text-center mb-5">
@@ -60,13 +73,17 @@
         <?php if (empty($reservations)): ?>
 
             <!-- Aucune réservation -->
+
             <div class="alert alert-info text-center">
+
                 Aucune réservation enregistrée.
+
             </div>
 
         <?php else: ?>
 
             <!-- Tableau -->
+
             <div class="table-responsive">
 
                 <table class="table table-bordered table-striped table-hover align-middle">
@@ -76,6 +93,10 @@
                         <tr>
 
                             <th>ID</th>
+
+                            <th>Nom</th>
+
+                            <th>Prénom</th>
 
                             <th>Village</th>
 
@@ -89,16 +110,14 @@
 
                             <th>Prix total</th>
 
-<<<<<<< HEAD
                             <th>Statut</th>
 
-=======
->>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
                             <th>Action</th>
 
                         </tr>
 
                     </thead>
+
 
                     <tbody>
 
@@ -107,41 +126,47 @@
                             <tr>
 
                                 <td>
-                                    <?= $reservation['id'] ?>
+                                    <?= esc($reservation['id']) ?>
                                 </td>
 
                                 <td>
-                                    <?= $reservation['village_nom'] ?>
+                                    <?= esc($reservation['nom_client']) ?>
                                 </td>
 
                                 <td>
-                                    <?= $reservation['chambre_nom'] ?>
+                                    <?= esc($reservation['prenom_client']) ?>
                                 </td>
 
                                 <td>
-                                    <?= $reservation['date_arrivee'] ?>
+                                    <?= esc($reservation['village_nom']) ?>
                                 </td>
 
                                 <td>
-                                    <?= $reservation['date_depart'] ?>
+                                    <?= esc($reservation['chambre_nom']) ?>
                                 </td>
 
                                 <td>
-                                    <?= $reservation['nombre_chambres'] ?>
+                                    <?= esc($reservation['date_arrivee']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($reservation['date_depart']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($reservation['nombre_chambres']) ?>
                                 </td>
 
                                 <td class="fw-bold">
-                                    <?= $reservation['prix_total'] ?> €
+                                    <?= esc($reservation['prix_total']) ?> €
                                 </td>
 
                                 <td>
-<<<<<<< HEAD
-                                    <?= $reservation['statut'] ?>
+                                    <?= esc($reservation['statut']) ?>
                                 </td>
 
                                 <td>
-=======
->>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
+
                                     <a
                                         href="/reservation/modifier/<?= $reservation['id'] ?>"
                                         class="btn btn-warning btn-sm"
@@ -152,16 +177,11 @@
                                     <a
                                         href="/reservation/supprimer/<?= $reservation['id'] ?>"
                                         class="btn btn-danger btn-sm"
-<<<<<<< HEAD
                                         onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');"
                                     >
                                         Annuler
-=======
-                                        onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');"
-                                    >
-                                        Supprimer
->>>>>>> d28141cf6982e6c3134fe41949fea3148ccfbd00
                                     </a>
+
                                 </td>
 
                             </tr>
@@ -178,6 +198,7 @@
 
 
         <!-- Boutons -->
+
         <div class="mt-4">
 
             <a href="/villages" class="btn btn-primary">
@@ -194,6 +215,7 @@
 
 
     <!-- Pied de page -->
+
     <footer class="bg-dark text-white text-center py-4">
 
         <p class="mb-0">
@@ -204,7 +226,10 @@
 
 
     <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 
