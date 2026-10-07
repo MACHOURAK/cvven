@@ -27,5 +27,19 @@ $routes->get('logout', 'Auth::logout');
 
 // Espace administration
 $routes->group('admin', function($routes) {
+
     $routes->get('/', 'Admin\Dashboard::index');
+
+    // Gestion des villages
+    $routes->get('villages', 'Admin\Villages::index');
+    $routes->get('villages/ajouter', 'Admin\Villages::ajouter');
+    $routes->post('villages/enregistrer', 'Admin\Villages::enregistrer');
+
+    $routes->get('villages/modifier/(:num)', 'Admin\Villages::modifier/$1');
+    $routes->post(
+        'villages/modifier/(:num)',
+        'Admin\Villages::enregistrerModification/$1'
+    );
+
+    $routes->get('villages/supprimer/(:num)', 'Admin\Villages::supprimer/$1');
 });
